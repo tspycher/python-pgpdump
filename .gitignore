@@ -5,3 +5,7 @@
 __pycache__/
 *.pyc
 *~
+bin
+lib
+.Python
+include/python2.7

@@ -1,5 +1,7 @@
 import binascii
-
+import hashlib
+from operator import itemgetter
+import bitstring
 
 class PgpdumpException(Exception):
     '''Base exception class raised by any parsing errors, etc.'''
@@ -120,6 +122,8 @@ def get_int_bytes(data):
     hexval = hexval.zfill(new_len)
     return binascii.unhexlify(hexval.encode('ascii'))
 
+def bigEndian(num, length=32):
+    return bitstring.BitArray(uint=num, length=length).bytes
 
 def same_key(key_a, key_b):
     '''Comparison function for key ID or fingerprint strings, taking into
@@ -130,3 +134,17 @@ def same_key(key_a, key_b):
         return key_b.endswith(key_a)
     else:
         return key_a.endswith(key_b)
+
+def sksHash(packets):
+    pp = []
+    for p in packets:
+        pp.append((p.raw, p.data))
+
+    sortedpackets = sorted(pp, key=itemgetter(0, 1))
+    m = hashlib.md5()
+    for p in sortedpackets:
+        m.update(bigEndian(int(p[0])))
+        m.update(bigEndian(int(len(p[1]))))
+        m.update(p[1])
+
+    return m.hexdigest()

@@ -21,5 +21,6 @@ setup(
     url = 'https://github.com/toofishes/python-pgpdump',
     keywords = 'pgp gpg rfc2440 rfc4880 crypto cryptography',
     classifiers = classifiers,
+    install_requires=["bitstring"],
     packages = ['pgpdump']
 )
