@@ -9,7 +9,7 @@ from pgpdump.packet import (TAG_TYPES, SignaturePacket, PublicKeyPacket,
         PublicSubkeyPacket, UserIDPacket, old_tag_length, new_tag_length,
         SecretKeyPacket, SecretSubkeyPacket)
 from pgpdump.utils import (PgpdumpException, crc24, get_int8, get_mpi,
-        get_key_id, get_int_bytes, same_key, sksHash)
+        get_key_id, get_int_bytes, same_key, sksHash, latestChange)
 
 
 class UtilsTestCase(TestCase):
@@ -369,6 +369,15 @@ E/GGdt/Cn5Rr1G933H9nwxo=
         p = list(data.packets())
         h = sksHash(p)
         self.assertEqual(h.lower(), "A20E35AC1AEE03E870FCFEBAF5EE3C21".lower())
+
+    def test_last_change(self):
+        rawdata = self.load_data('skshash.asc')
+        data = AsciiData(rawdata)
+        p = list(data.packets())
+        t = latestChange(p)
+        self.assertEqual(t, 1377542058)
+        #import datetime
+        #print(datetime.datetime.fromtimestamp(int(t)).strftime('%Y-%m-%d %H:%M:%S'))
 
     def test_parse_v3_elgamal_pk(self):
         '''Two older version 3 public keys.'''

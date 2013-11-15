@@ -135,6 +135,15 @@ def same_key(key_a, key_b):
     else:
         return key_a.endswith(key_b)
 
+def latestChange(packets):
+    lasttime = 0
+    for p in packets:
+        if hasattr(p, 'raw_creation_time'):
+            t = p.raw_creation_time
+            if t > lasttime:
+                lasttime = t
+    return int(lasttime)
+
 def sksHash(packets):
     pp = []
     for p in packets:

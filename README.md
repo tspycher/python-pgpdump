@@ -15,3 +15,11 @@ time. Currently supported things include:
 
 A single codebase with dependencies on only the standard python library is
 compatible across Python 2.7, Python 3.2+, and PyPy 1.8+.
+
+This version of the library has been slightly modified by Thomas Spycher and adds the following funcdtions:
+
+* generation of SKS compatible hashes
+* get the latest timestamp of a change in the key
+
+To install this version use the following command
+`pip install git+git://github.com/tspycher/python-pgpdump.git#egg=pgpdump`
